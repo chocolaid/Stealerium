@@ -18,7 +18,13 @@ internal sealed class Discord
             var response = client.DownloadString(
                 token
             );
-            return response.StartsWith("{\"type\": 1");
+            
+            // Check properly for valid webhook
+            return response.Contains("\"type\":1") && 
+                   response.Contains("\"id\":") && 
+                   response.Contains("\"token\":") && 
+                   response.Contains("\"url\":") &&
+                   response.Contains("discord.com/api/webhooks/");
         }
         catch
         {

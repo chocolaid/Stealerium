@@ -45,4 +45,40 @@ internal sealed class Crypt
 
         return "ENCRYPTED:" + Convert.ToBase64String(encryptedBytes);
     }
+
+    // Decrypt string
+    public static string Decrypt(byte[] bytesToBeDecrypted)
+    {
+        byte[] decryptedBytes;
+        using (var ms = new MemoryStream())
+        {
+            using var aes = Aes.Create("AesManaged");
+            aes.KeySize = 256;
+            aes.BlockSize = 128;
+            var key = new Rfc2898DeriveBytes(CryptKey, SaltBytes, 1000);
+            aes.Key = key.GetBytes(aes.KeySize / 8);
+            aes.IV = key.GetBytes(aes.BlockSize / 8);
+            aes.Mode = CipherMode.CBC;
+            using (var cs = new CryptoStream(ms, aes.CreateDecryptor(), CryptoStreamMode.Write))
+            {
+                cs.Write(bytesToBeDecrypted, 0, bytesToBeDecrypted.Length);
+                cs.Close();
+            }
+
+            decryptedBytes = ms.ToArray();
+        }
+
+        return Encoding.UTF8.GetString(decryptedBytes);
+    }
+
+    // Decrypt config values
+    public static string DecryptConfig(string value)
+    {
+        if (string.IsNullOrEmpty(value))
+            return "";
+        if (!value.StartsWith("ENCRYPTED:"))
+            return value;
+        return Decrypt(Convert.FromBase64String(value
+            .Replace("ENCRYPTED:", "")));
+    }
 }

